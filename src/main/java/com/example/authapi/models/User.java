@@ -1,13 +1,26 @@
 package com.example.authapi.models;
 
+import com.example.authapi.enums.RoleEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "TB_USER")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -15,9 +28,7 @@ public class User {
     private String name;
     private  String login;
     private String password;
-
-    public User() {
-    }
+    private RoleEnum role;
 
     public User(String name, String login, String password) {
         this.name = name;
@@ -25,35 +36,45 @@ public class User {
         this.password = password;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == RoleEnum.ADMIN){
+            return List.of(
+                new SimpleGrantedAuthority("ROLE_ADMIN"),
+                new SimpleGrantedAuthority("ROLE_USER")
+            );
+        }
+        return List.of(
+                new SimpleGrantedAuthority("ROLE_USER")
+        );
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
+    @Override
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+    @Override
+    public String getUsername() {
+        return this.login;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

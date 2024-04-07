@@ -1,0 +1,1 @@
+Application with Spring Security and JWT
