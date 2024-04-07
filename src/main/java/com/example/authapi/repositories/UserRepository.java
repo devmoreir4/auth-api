@@ -1,4 +1,4 @@
-package com.example.authapi.respositories;
+package com.example.authapi.repositories;
 
 import com.example.authapi.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

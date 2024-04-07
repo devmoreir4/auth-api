@@ -1,10 +1,7 @@
 package com.example.authapi.models;
 
 import com.example.authapi.enums.RoleEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,15 +22,20 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private  String login;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private RoleEnum role;
 
-    public User(String name, String login, String password) {
+    public User(String name, String login, String password, RoleEnum role) {
         this.name = name;
         this.login = login;
         this.password = password;
+        this.role = role;
     }
 
     @Override

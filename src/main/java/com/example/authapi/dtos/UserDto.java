@@ -1,4 +1,10 @@
 package com.example.authapi.dtos;
 
-public record UserDto(String name, String login, String password) {
+import com.example.authapi.enums.RoleEnum;
+
+public record UserDto(String name,
+                      String login,
+                      String password,
+                      RoleEnum role
+) {
 }
